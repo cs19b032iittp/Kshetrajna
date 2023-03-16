@@ -7,9 +7,7 @@ import StepContent from '@mui/material/StepContent';
 import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
-import RenderForm from './RenderForm';
-import { FarmerService } from "config";
-import axios from "axios";
+import RenderResponses from './RenderResponses';
 
 const stages = [
   {
@@ -71,7 +69,16 @@ const stages = [
 
 
 
-export default function FarmWorkflow({stages, activeStep}) {
+export default function FarmWorkflow() {
+  const [activeStep, setActiveStep] = React.useState(0);
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
 
 
   return (
@@ -88,13 +95,13 @@ export default function FarmWorkflow({stages, activeStep}) {
             </StepLabel>
             <StepContent>
               <Typography variant='body2'>{stage.description}</Typography>
-              {/* {stage.forms.map((form, idx) => {
+              {stage.forms.map((form, idx) => {
                 return (
                   <>
-                    <RenderForm form={form} formId={stage.formId} index={idx}/>
+                    <RenderResponses form={form} formId={stage.formId} index={idx}/>
                   </>
                 )
-              })} */}
+              })}
               {/* <Box sx={{ mb: 2 }}>
                 <div>
                   <Button

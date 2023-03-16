@@ -1,19 +1,12 @@
-import { lazy } from "react";
 import Loadable from "components/Loadable";
+import Farm from "pages/Consultant/Farm";
+import Farms from "pages/Consultant/Farms";
+import ConsultantNavigation from "pages/Consultant/Navigation";
+import FarmerNavigation from "pages/Farmer/Navigation";
+import ModelBuilderNavigation from "pages/ModelBuilder/Navigation";
+import { lazy } from "react";
 import { Outlet } from "react-router-dom";
 import Private from "./PrivateRoute";
-import FarmerNavigation from "pages/Farmer/Navigation";
-import ConsultantNavigation from "pages/Consultant/Navigation";
-// import AddField from "pages/Farmer/AddField";
-// import MyField from "pages/Farmer/MyField";
-// import MyFields from "pages/Farmer/MyFields";
-// import ConnectConsultants from "pages/Farmer/Consultants";
-// import ConnectDataProviders from "pages/Farmer/DataProviders";
-// import Prediction from "pages/Farmer/Prediction";
-// import FarmerRequests from "pages/Consultant/FarmerRequests";
-// import DataProviderRequests from "pages/Consultant/DataProviderRequests";
-// import ModelBuilderRequests from "pages/Consultant/ModelBuilderRequests";
-// import MainLayout from "layout/MainLayout";
 
 const MainLayout = Loadable(lazy(() => import('layout/MainLayout')));
 
@@ -27,6 +20,10 @@ const Prediction = Loadable(lazy(() => import('pages/Farmer/Prediction')));
 const FarmerRequests = Loadable(lazy(() => import('pages/Consultant/FarmerRequests')));
 const DataProviderRequests = Loadable(lazy(() => import('pages/Consultant/DataProviderRequests')));
 const ModelBuilderRequests = Loadable(lazy(() => import('pages/Consultant/ModelBuilderRequests')));
+const CreateWorkflow = Loadable(lazy(() => import('pages/Consultant/CreateWorkflow')));
+const AssignWorkflow = Loadable(lazy(() => import('pages/Consultant/AssignWorkflow')));
+
+const UploadModel = Loadable(lazy(() => import('pages/ModelBuilder/UploadModel')));
 
 
 const MainRoutes = {
@@ -50,7 +47,7 @@ const MainRoutes = {
               element: <MyFields />,
             },
             {
-              path: "my-field/:fieldId",
+              path: "my-field/:cropid",
               element: <MyField />,
             },
           ]
@@ -86,6 +83,20 @@ const MainRoutes = {
       element: <MainLayout navigation={ConsultantNavigation} />,
       children: [
         {
+          path: "farming",
+          element: <Outlet />,
+          children: [
+            {
+              path: "farms",
+              element: <Farms />
+            },
+            {
+              path: "farm/:farmID",
+              element: <Farm />
+            },
+          ]
+        },
+        {
           path: "requests",
           element: <Outlet />,
           children: [
@@ -100,6 +111,37 @@ const MainRoutes = {
             {
               path: "model-builder",
               element: <ModelBuilderRequests />
+            }
+          ]
+        },
+        {
+          path: "workflow",
+          element: <Outlet />,
+          children: [
+            {
+              path: "assign",
+              element: <AssignWorkflow />
+            },
+            {
+
+              path: "create",
+              element: <CreateWorkflow />
+            },
+          ]
+        }
+      ]
+    },
+    {
+      path: "model-builder",
+      element: <MainLayout navigation={ModelBuilderNavigation} />,
+      children: [
+        {
+          path: "model",
+          element: <Outlet />,
+          children: [
+            {
+              path: "upload",
+              element: <UploadModel />
             }
           ]
         }

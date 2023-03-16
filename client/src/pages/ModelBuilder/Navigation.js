@@ -1,8 +1,7 @@
-import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
+import { Agriculture } from '@mui/icons-material';
 import ConnectWithoutContactIcon from '@mui/icons-material/ConnectWithoutContact';
-import ForestIcon from '@mui/icons-material/Forest';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
-import { Card, Divider, CardContent, Stack, Typography } from '@mui/material';
+import { Divider } from '@mui/material';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -10,45 +9,31 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const NavItems = [
   {
     group: true,
-    name: 'Farm',
-    route: 'farm',
+    name: 'Requests',
+    route: 'requests',
     icon: <></>,
     children: [
       {
         group: false,
-        name: 'My Fields',
-        route: 'my-fields',
-        icon: <ForestIcon />
+        name: 'Farmer',
+        route: 'farmer',
+        icon: <Agriculture />
       },
       {
         group: false,
-        name: 'Add Field',
-        route: 'add-field',
-        icon: <AddToPhotosIcon />
-      },
-    ]
-  },
-  {
-    group: true,
-    name: 'Connect',
-    route: 'connect',
-    icon: <></>,
-    children: [
-      {
-        group: false,
-        name: 'Consultants',
-        route: 'consultants',
+        name: 'Model Builder',
+        route: 'model-builder',
         icon: <PeopleAltIcon />
       },
       {
         group: false,
-        name: 'Data Providers',
-        route: 'data-providers',
+        name: 'Data Provider',
+        route: 'data-provider',
         icon: <ConnectWithoutContactIcon />
       },
     ]
@@ -68,14 +53,8 @@ const NavItems = [
     ]
   }
 ]
-const FarmerNavigation = () => {
+const ConsultantNavigation = () => {
   const navigate = useNavigate();
-
-  const location = useLocation();
-  const path = location.pathname
-  const route = path.substring(path.lastIndexOf('/') + 1)
-  console.log(route)
-
 
   return (
     <>
@@ -90,7 +69,7 @@ const FarmerNavigation = () => {
                 {nav_item.children.map((nav) =>
                   <>
                     {
-                      <ListItem key={index} sx={{ borderRadius: 4 }} disablePadding selected={(nav.route === route)} as={Link} color='inherit' underline='none' onClick={() => navigate(`${nav_item.route}/${nav.route}`)} >
+                      <ListItem key={index} sx={{ borderRadius: 4 }} disablePadding as={Link} color='inherit' underline='none' onClick={() => navigate(`${nav_item.route}/${nav.route}`)} >
                         <ListItemButton sx={{ borderRadius: 4 }}>
                           <ListItemIcon>
                             {nav.icon}
@@ -118,19 +97,8 @@ const FarmerNavigation = () => {
             </>}
         </>
       )}
-
-      <Card sx={{ minWidth: 250, bgcolor: 'grey.300', borderRadius: 5, p: 2 }}>
-        <CardContent sx={{ mt: -2 }}>
-          <Stack>
-            <img src='https://climatestyles.netlify.app/assets/2.2183248b.png' alt='weather' />
-            <Typography gutterBottom variant="h6" sx={{ textAlign: 'center' }} component="div">
-              30 °C
-            </Typography>
-          </Stack>
-        </CardContent>
-      </Card>
     </>
   )
 }
 
-export default FarmerNavigation
+export default ConsultantNavigation

@@ -11,7 +11,25 @@ import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
 import { useNavigate } from "react-router-dom";
 
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import AddToPhotosIcon from '@mui/icons-material/AddToPhotos';
+import ForestIcon from '@mui/icons-material/Forest';
+import AssignmentIcon from '@mui/icons-material/Assignment';
 const NavItems = [
+  {
+    group: true,
+    name: 'Farming',
+    route: 'farming',
+    icon: <></>,
+    children: [
+      {
+        group: false,
+        name: 'Farms',
+        route: 'farms',
+        icon: <ForestIcon />
+      },
+    ]
+  },
   {
     group: true,
     name: 'Requests',
@@ -40,15 +58,21 @@ const NavItems = [
   },
   {
     group: true,
-    name: 'Prediction',
-    route: 'prediction',
+    name: 'Workflow',
+    route: 'workflow',
     icon: <></>,
     children: [
       {
         group: false,
-        name: 'Predict',
-        route: 'predict',
-        icon: <PeopleAltIcon />
+        name: 'Assign',
+        route: 'assign',
+        icon: <AssignmentIcon />
+      },
+      {
+        group: false,
+        name: 'Create',
+        route: 'create',
+        icon: <NoteAddIcon />
       },
     ]
   }

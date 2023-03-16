@@ -1,9 +1,8 @@
-import { Avatar, Box, Card, CardActionArea, CardContent, CardHeader, Rating, Stack, Typography } from '@mui/material';
+import { Avatar, Box, Button, Card, CardActionArea, CardContent, CardHeader, Rating, Stack, Typography } from '@mui/material';
 import { green } from '@mui/material/colors';
 import axios from 'axios';
-import React from 'react';
+import React, { useRef } from 'react';
 import Consultant from './Consultant';
-
 
 const ConnectConsultants = () => {
 
@@ -56,7 +55,6 @@ const ConnectConsultants = () => {
   }, []);
 
   return (
-    <>
       <Box sx={{ p: 2 }}>
         <Typography variant='h5'>
           Connect consultant
@@ -98,7 +96,6 @@ const ConnectConsultants = () => {
               <Consultant open={open && selected !== -1} setOpen={setOpen} handleClickOpen={handleClickOpen} handleClose={handleClose} consultant={consultants[selected]}/>
             </Box> 
       </Box>
-    </>
   )
 }
 

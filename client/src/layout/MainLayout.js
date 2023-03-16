@@ -149,8 +149,8 @@ export default function MainLayout(props) {
           <MenuItem onClick={(() => navigate("/consultant/requests/farmer"))}>
             <EmojiPeopleIcon sx={{ mr: 1.5 }} /> Consutlant
           </MenuItem>
-          <MenuItem onClick={(() => navigate("/3"))}>
-            <CodeIcon sx={{ mr: 1.5 }} /> Developer
+          <MenuItem onClick={(() => navigate("/model-builder/model/upload"))}>
+            <CodeIcon sx={{ mr: 1.5 }} /> Model Builder
           </MenuItem>
         </Menu>
 
@@ -199,7 +199,7 @@ export default function MainLayout(props) {
 
         </Box>
       </Drawer >
-      <Box component="main" sx={{ flexGrow: 1, p: 2, bgcolor: '#f9fafb', minHeight: '100vh' }}>
+      <Box component="main" sx={{ flexGrow: 1, paddingTop  :1, bgcolor: '#f9fafb', minHeight: '100vh' }}>
         <Toolbar />
         <Outlet />
       </Box>

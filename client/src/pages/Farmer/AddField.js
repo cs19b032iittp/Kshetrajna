@@ -14,6 +14,9 @@ import * as Yup from "yup";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import Autocomplete from '@mui/material/Autocomplete';
+import axios from "axios";
+import { FarmerService } from "config";
 
 let easing = [0.6, -0.05, 0.01, 0.99];
 
@@ -33,6 +36,7 @@ const animate = {
 const AddField = () => {
 
   const [open, setOpen] = React.useState(false);
+  const [consultants, setConsultants] = React.useState(["Vivek", "Aditya", "Yashwanth"]);
   const [submitting, setSubmitting] = React.useState(false);
 
   const [date, setDate] = React.useState('');
@@ -41,36 +45,81 @@ const AddField = () => {
     setDate(newValue);
   };
 
+  //TODO: pass date as date object
   const AddFieldSchema = Yup.object().shape({
     farm: Yup.string()
       .required("farm type is required"),
     soil: Yup.string()
       .required("soil type is required"),
-    date: Yup.date().nullable()
+    season: Yup.string()
+      .required("season is required"),
+    date: Yup.string()
+      .required("date is required"),
+    consultant: Yup.string()
+      .required("consultant is required"),
   });
 
   const formik = useFormik({
     initialValues: {
       farm: "",
+      soil: "",
+      season: "",
       date: "",
+      consultant: ""
     },
     validationSchema: AddFieldSchema,
-    onSubmit: (values, { resetForm }, props) => {
+    onSubmit: async (values, { resetForm }, props) => {
       console.log("Submitting Form")
       setOpen(false);
       setSubmitting(true);
 
+      values = {
+        ...values,
+        farmerId: "63e537d68b30684dfff02a60",
+        consultantId: "63e539ebce9f46c959482e85",
+        img: "https://images.moneycontrol.com/static-mcnews/2022/08/sreehari-devadas-WDI95CIPW00-unsplash.jpg?impolicy=website"
+      }
       console.log(values);
-      resetForm();
-      setSubmitting(false);
-      setOpen(true);
-      setTimeout(() => {
-        setOpen(false);
-      }, 2000);
+
+      const config = {
+        header: {
+          "Content-Type": "application/json",
+        },
+      };
+
+      const url = FarmerService + '/api/farmer/crops/addcrop'
+      console.log(url)
+
+      try {
+        const { data } = await axios.put(url, values, config);
+
+        console.log(data)
+        resetForm();
+        setSubmitting(false);
+        setOpen(true);
+        setTimeout(() => {
+          setOpen(false);
+        }, 2000);
+
+        // localStorage.setItem("authToken", data.token);
+
+        // console.log("Login sucessful");
+        // setAuthenticating(false)
+        // navigate(from, { replace: true });
+
+      } catch (error) {
+
+        setSubmitting(false);
+
+        alert(error.message)
+
+
+      }
+
     },
   });
 
-  const { errors, touched, getFieldProps } = formik;
+  const { errors, touched, getFieldProps, setFieldValue } = formik;
 
 
   return (
@@ -148,7 +197,38 @@ const AddField = () => {
                       helperText={touched.soil && errors.soil}
                     />
 
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <TextField
+                      fullWidth
+                      label="Season"
+                      {...getFieldProps("season")}
+                      error={Boolean(touched.season && errors.season)}
+                      helperText={touched.season && errors.season}
+                    />
+
+                    <TextField
+                      fullWidth
+                      label="Plantation date"
+                      {...getFieldProps("date")}
+
+                      placeholder="YYYY/MM/DD"
+                      error={Boolean(touched.date && errors.date)}
+                      helperText={touched.date && errors.date}
+                    />
+
+                    <Autocomplete
+                      fullWidth
+                      disablePortal
+                      id="combo-box-demo"
+                      options={consultants}
+                      {...getFieldProps("consultant")}
+                      onChange={(e, value) => {
+                        setFieldValue("consultant", value)
+                      }}
+                      renderInput={(params) => <TextField {...params} label="Consultant" error={Boolean(touched.consultant && errors.consultant)}
+                        helperText={touched.consultant && errors.consultant} />}
+                    />
+
+                    {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DesktopDatePicker
                         label="Plantation date"
                         inputFormat="MM/DD/YYYY"
@@ -160,7 +240,7 @@ const AddField = () => {
                           error={Boolean(touched.date && errors.date)}
                           helperText={touched.date && errors.date} />}
                       />
-                    </LocalizationProvider>
+                    </LocalizationProvider> */}
                   </Stack>
                   <Box
                     component={motion.div}
