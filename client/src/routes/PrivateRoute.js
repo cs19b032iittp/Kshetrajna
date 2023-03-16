@@ -56,7 +56,7 @@ const Private = () => {
     }
     return (
         <>
-            <Outlet />
+            <Render />
         </>
     );
 };
