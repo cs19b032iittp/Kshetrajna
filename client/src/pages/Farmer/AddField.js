@@ -73,11 +73,26 @@ const AddField = () => {
       setOpen(false);
       setSubmitting(true);
 
+      let img = ''
+      switch (values.farm) {
+        case 'Paddy':
+          img = 'https://cdn.britannica.com/89/140889-050-EC3F00BF/Ripening-heads-rice-Oryza-sativa.jpg'
+          break;
+        case 'Sugar Cane':
+          img = 'https://t0.gstatic.com/licensed-image?q=tbn:ANd9GcQFUmCbrbIsGEKL_jmd8PZH0WuKoEgXAtwE0gYbTjJI-N4frgDNYWi6DEN7by8phYkLaQoLwHy1f8NHtGw'
+          break;
+        case 'Mango':
+          img = 'https://cdn.britannica.com/05/75905-050-C7AE0733/Mangoes-tree.jpg'
+          break;
+        default:
+          break
+      }
+
       values = {
         ...values,
         farmerId: "63e537d68b30684dfff02a60",
         consultantId: "63e539ebce9f46c959482e85",
-        img: "https://images.moneycontrol.com/static-mcnews/2022/08/sreehari-devadas-WDI95CIPW00-unsplash.jpg?impolicy=website"
+        img: img
       }
       console.log(values);
 

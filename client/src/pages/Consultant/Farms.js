@@ -1,64 +1,106 @@
-import { Box, CardActionArea, Link } from '@mui/material';
+import { Box, CardActionArea, Link, Paper, Skeleton } from '@mui/material';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
+import React from 'react';
 import { useNavigate } from "react-router-dom";
+import { FarmerService } from "config";
+import axios from "axios";
+import FetchingItems from 'components/FetchingItems';
+import ErrorPage from 'components/Error';
+import NoItems from 'components/NoItems';
 
 
-const farms = [
-  {
-    id: '783345',
-    name: 'Paddy',
-    date: '11/02/2023',
-    farmer: 'Vivek',
-    img: 'https://cdn.britannica.com/89/140889-050-EC3F00BF/Ripening-heads-rice-Oryza-sativa.jpg'
-  },
-  {
-    id: '4433345',
-    name: 'Sugarcane',
-    date: '3/01/2023',
-    farmer: 'Vivek',
-    img: 'https://www.ragus.co.uk/wp-content/uploads/2022/07/Growing_SCane_01_ss_767632852_560x389px.jpg'
-  },
-  {
-    id: '1459832',
-    name: 'Mango',
-    date: '23/05/2022',
-    farmer: 'Aditya',
-    img: 'https://cdn.britannica.com/05/75905-050-C7AE0733/Mangoes-tree.jpg'
-  }
-]
 const Farms = () => {
   const navigate = useNavigate();
 
-  return (
-    <Box sx={{display : 'flex', flexWrap : 'wrap'}}>
-      {
-        farms.map((field) =>
-          <>
-            <Card sx={{ minWidth: 300, m: 1, boxShadow : 1, borderRadius : 2 }} as={Link} color='inherit' underline='none' onClick={() => navigate('/consultant/farming/farm/34321')}>
-              <CardActionArea >
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={field.img}
-                  alt={field.name}
-                />
-                <CardContent>
-                  <Typography gutterBottom variant="h5" component="div">
-                    {field.name}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    Planted by {field.farmer} on {field.date} 
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </>)
+  const [loading, setLoading] = React.useState(true);
+  const [message, setMessage] = React.useState('');
+  const [error, setError] = React.useState(false);
+
+  const [fields, setFields] = React.useState([])
+
+
+  React.useEffect(() => {
+
+    async function fetchCrops() {
+      setLoading(true)
+      setError(false)
+      setMessage('')
+
+      const config = {
+        header: {
+          "Content-Type": "application/json",
+        },
+      };
+      const url = FarmerService + '/api/consultant/crops/myassignedcrops'
+      console.log(url)
+      try {
+        const { data } = await axios.post(url, { consultantid : '63e539ebce9f46c959482e85' }, config);
+        
+        setFields(data)
+        console.log(data)
+        setLoading(false)
+
+      } catch (error) {
+        setError(true)
+        setMessage(error.message)
+        setLoading(false)
+
       }
-    </Box>
+
+    }
+
+    fetchCrops();
+
+
+  }, [])
+
+  return (
+    <>
+      {loading ? <FetchingItems /> :
+        <>
+          {error ? <ErrorPage message={message} /> :
+            <>
+              {(fields.length === 0) ? <NoItems description={"No crops found"} message={''} label={''}  /> :
+                <>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                    {
+                      fields.map((field, index) =>
+                        <>
+                          <Card sx={{ minWidth: 300, m: 2, boxShadow: 1, borderRadius: 1 }} as={Link} color='inherit' underline='none'  onClick={() => navigate(`/consultant/farming/farm/${field._id}`)}>
+                            <CardActionArea >
+                              <CardMedia
+                                component="img"
+                                height="200"
+                                image={field.img}
+                                alt={field.cropname}
+                              />
+                              <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                  {field.cropname}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                  Planted on {field.startdate}
+                                </Typography>
+                              </CardContent>
+                            </CardActionArea>
+                          </Card>
+                        </>
+                      )
+                    }
+                  </Box>
+                </>
+              }
+            </>
+          }
+        </>
+      }
+    </>
   )
 }
 
 export default Farms
+
+

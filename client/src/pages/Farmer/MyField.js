@@ -1,9 +1,10 @@
-import { Box, LinearProgress } from '@mui/material';
+import { Box, Card, CardMedia, Divider, Grid, LinearProgress, Typography } from '@mui/material';
 import axios from "axios";
 import ErrorPage from 'components/Error';
 import { FarmerService } from "config";
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import FarmWorkflow from './FarmWorkflow';
 
 const News = [
   {
@@ -89,11 +90,16 @@ const MyField = (props) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(true)
   const [message, setMessage] = useState(true)
-  const [stages, setStages] = useState([])
-  const [activeStep, setActiveStep] = useState(0);
+  // const [stages, setStages] = useState([])
+  // const [form, setForm] = useState({})
+  // const [submitted, setSubmitted] = useState(true)
+  // const [activeStep, setActiveStep] = useState(0);
+
+
+
+  const [workflowInstance, setWorkflowInstance] = useState({});
 
   useEffect(() => {
-
     async function getWorkflow() {
 
       setLoading(true)
@@ -105,10 +111,11 @@ const MyField = (props) => {
         },
       };
       const url = FarmerService + '/api/farmer/workflow/getmyworkflow'
+      console.log({ url })
+
       try {
         const { data } = await axios.post(url, { cropid: cropid }, config);
-        setActiveStep(data.workflow.curstage)
-        setStages(data.workflow.stages)
+        setWorkflowInstance(data.workflowInstance)
       } catch (error) {
         setError(true)
         setMessage(error.message)
@@ -124,8 +131,8 @@ const MyField = (props) => {
   return (
     <Box>
       {loading && <LinearProgress />}
-      {error && <ErrorPage message={message}  />}
-      {/* <Grid container spacing={2}>
+      {error && <ErrorPage message={message} />}
+      {!loading && <Grid container spacing={2}>
         <Grid item xs={8}>
           <Box sx={{ height: '100vh', borderColor: 'grey.300', p: 3 }}>
             <Typography gutterBottom variant="h5" component="div">
@@ -139,7 +146,8 @@ const MyField = (props) => {
                 alt='Paddy'
               />
             </Card>
-            <FarmWorkflow  stages={_stages}  activeStep={activeStep}/>
+
+            <FarmWorkflow cropid={cropid} workflowInstance={workflowInstance} />
           </Box>
 
         </Grid>
@@ -168,7 +176,7 @@ const MyField = (props) => {
 
           </Box>
         </Grid>
-      </Grid> */}
+      </Grid>}
     </Box>
   )
 }

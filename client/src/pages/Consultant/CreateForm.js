@@ -18,7 +18,7 @@ const CreateForm = (props) => {
 
 
     const [formFields, setFormFields] = useState([
-        { question: '', type: 'short', options: [''], reponses: [''] }
+        { question: '', type: 'short', options: [''], responses: [''] }
     ])
 
     const handleClose = () => {

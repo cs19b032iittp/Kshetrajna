@@ -65,6 +65,7 @@ const MyFields = () => {
         },
       };
       const url = FarmerService + '/api/farmer/crops/mycrops'
+      console.log(url)
       try {
         const { data } = await axios.post(url, { farmerid: '63e537d68b30684dfff02a60' }, config);
         setFields(data)
@@ -91,12 +92,12 @@ const MyFields = () => {
           {error ? <ErrorPage message={message} /> :
             <>
               {(fields.length === 0) ? <NoItems description={"No crops found"} message={''} label={'Add Crop'} href={'/farmer/farm/add-field'} /> :
-                <Box>
-                  <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center'}}>
+                <>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap'}}>
                     {
                       fields.map((field, index) =>
-                        <Box key={index}>
-                          <Card sx={{ minWidth: 300, m: 1, boxShadow: 1, borderRadius: 1 }} as={Link} color='inherit' underline='none' onClick={() => navigate(`/farmer/farm/my-field/${field._id}`)}>
+                        <>
+                          <Card sx={{ minWidth: 300, m: 2, boxShadow: 1, borderRadius: 1 }} as={Link} color='inherit' underline='none' onClick={() => navigate(`/farmer/farm/my-field/${field._id}`)}>
                             <CardActionArea >
                               <CardMedia
                                 component="img"
@@ -114,11 +115,11 @@ const MyFields = () => {
                               </CardContent>
                             </CardActionArea>
                           </Card>
-                        </Box>
+                        </>
                       )
                     }
                   </Box>
-                </Box>
+                </>
               }
             </>
           }

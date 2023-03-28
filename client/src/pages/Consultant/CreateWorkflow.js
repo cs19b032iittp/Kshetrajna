@@ -61,7 +61,7 @@ const CreateWorkflow = () => {
       const url = FarmerService + '/api/consultant/workflow/addworkflowtemplate'
 
       try {
-        const response = await axios.put(url, { stages: stageFields, workflowname: 'tmp' }, config);
+        const response = await axios.put(url, { stages: stageFields, workflowname: name }, config);
         alert("Workflow Created")
         window.location.reload(false)
       } catch (error) {
@@ -94,12 +94,12 @@ const CreateWorkflow = () => {
                 style: {
                   fontSize: "1.5rem",
                 },
-                size: name.length - 4,
+                size: name.length +1,
               }}
             />
           </Box>
           <Box sx={{ display: "flex", alignItems: 'center' }}>
-          <Button name="Generate Image" variant='contained' color='success' onClick={() => GenerateImage(ref.current)} > GenerateImage</Button>
+          {/* <Button name="Generate Image" variant='contained' color='success' onClick={() => GenerateImage(ref.current)} > GenerateImage</Button> */}
             <Button name="CreateWorkflow" variant='contained' color='success' type="submit">Create Workflow</Button>
           </Box>
         </Box>
@@ -110,10 +110,12 @@ const CreateWorkflow = () => {
           <Box ref={ref}  sx={{
             padding: 2,
             display: 'flex',
-            alignItems: "center",
+            justifyContent: "center",
             width: 'auto',
             borderRadius: 5,
-            bgcolor: lightBlue[50]
+            bgcolor: lightBlue[50],
+            minHeight: '100vh'
+
           }}>
             <Stack>
               {stageFields.map((stage, index) => {

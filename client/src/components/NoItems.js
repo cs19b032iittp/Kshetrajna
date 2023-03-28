@@ -22,16 +22,16 @@ const styles = {
   },
 };
 
-const NoItems = ({description, href , label }) => {
+const NoItems = ({ description, href, label }) => {
   const navigate = useNavigate();
   return (
     <Box style={styles.container}>
       <Typography variant="h5" style={styles.title}>
         {description}
       </Typography>
-      <Button variant="contained" color="primary" style={styles.button} onClick={() =>  navigate(href)}>
+      {label !== '' && <Button variant="contained" color="primary" style={styles.button} onClick={() => navigate(href)}>
         {label}
-      </Button>
+      </Button>}
     </Box>
   );
 };

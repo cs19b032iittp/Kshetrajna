@@ -91,7 +91,7 @@ const MainRoutes = {
               element: <Farms />
             },
             {
-              path: "farm/:farmID",
+              path: "farm/:cropid",
               element: <Farm />
             },
           ]

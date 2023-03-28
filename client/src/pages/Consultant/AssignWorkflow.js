@@ -17,57 +17,32 @@ import DialogTitle from '@mui/material/DialogTitle';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
 
-
-// const fields = [
-//   {
-//     id: '783345',
-//     name: 'Paddy',
-//     date: '11/02/2023',
-//     img: 'https://cdn.britannica.com/89/140889-050-EC3F00BF/Ripening-heads-rice-Oryza-sativa.jpg'
-//   },
-//   {
-//     id: '4433345',
-//     name: 'Sugarcane',
-//     date: '3/01/2023',
-//     img: 'https://www.ragus.co.uk/wp-content/uploads/2022/07/Growing_SCane_01_ss_767632852_560x389px.jpg'
-//   },
-//   {
-//     id: '1459832',
-//     name: 'Mango',
-//     date: '23/05/2022',
-//     img: 'https://cdn.britannica.com/05/75905-050-C7AE0733/Mangoes-tree.jpg'
-//   }
-// ]
-
-const farms = [
-    {
-        id: '783345',
-        name: 'Paddy',
-        date: '11/02/2023',
-        farmer: 'Vivek',
-        img: 'https://cdn.britannica.com/89/140889-050-EC3F00BF/Ripening-heads-rice-Oryza-sativa.jpg'
-    },
-    {
-        id: '4433345',
-        name: 'Sugarcane',
-        date: '3/01/2023',
-        farmer: 'Vivek',
-        img: 'https://www.ragus.co.uk/wp-content/uploads/2022/07/Growing_SCane_01_ss_767632852_560x389px.jpg'
-    },
-    {
-        id: '1459832',
-        name: 'Mango',
-        date: '23/05/2022',
-        farmer: 'Aditya',
-        img: 'https://cdn.britannica.com/05/75905-050-C7AE0733/Mangoes-tree.jpg'
-    }
-]
-
-
-const RenderCrop = ({ field, workflows }) => {
+const RenderCrop = ({ field, workflows, workflowIds }) => {
 
     const [open, setOpen] = React.useState(false)
     const [value, setValue] = React.useState('');
+
+    const AssignWorkflow = async () => {
+        console.log()  
+
+        const config = {
+            header: {
+              "Content-Type": "application/json",
+            },
+          };
+
+          const url = FarmerService + '/api/consultant/workflow/assignworkflow'
+          console.log(url)
+
+          try {
+            const { data } = await axios.put(url, { workflowid: workflowIds[workflows.indexOf(value)], cropid: field._id }, config);
+            
+            console.log(data)
+            setOpen(false)
+          } catch (error) {
+            alert(error.message)
+          }
+    }
 
     return (
         <>
@@ -77,14 +52,14 @@ const RenderCrop = ({ field, workflows }) => {
                         component="img"
                         height="200"
                         image={field.img}
-                        alt={field.name}
+                        alt={field.cropname}
                     />
                     <CardContent>
                         <Typography gutterBottom variant="h5" component="div">
-                            {field.name}
+                            {field.cropname}
                         </Typography>
                         <Typography variant="body2" color="text.secondary">
-                            Planted by {field.farmer} on {field.date}
+                            Planted by Aditya on {field.startdate}
                         </Typography>
                     </CardContent>
                 </CardActionArea>
@@ -116,7 +91,7 @@ const RenderCrop = ({ field, workflows }) => {
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setOpen(false)}>Close</Button>
-                    <Button autoFocus>
+                    <Button autoFocus onClick={() => AssignWorkflow()}>
                         Assign
                     </Button>
                 </DialogActions>
@@ -128,38 +103,70 @@ const RenderCrop = ({ field, workflows }) => {
 const AssignWorkflow = () => {
     const navigate = useNavigate();
 
-    const [workflows, createWorkflows] = React.useState(['SugerCane', 'Mango'])
+    const [workflows, setWorkflows] = React.useState([])
+    const [workflowIds, setWorkflowsIds] = React.useState([])
 
-    //   const [fields, setFields] = React.useState([])
+      const [farms, setFarms] = React.useState([])
 
-    //   React.useEffect(() => {
+      React.useEffect(() => {
 
-    //     async function fetchCrops() {
-    //       const config = {
-    //         header: {
-    //           "Content-Type": "application/json",
-    //         },
-    //       };
-    //       const url = FarmerService + '/api/farmer/crops/mycrops'
-    //       try {
-    //         const { data } = await axios.post(url, { farmerid: '63e537d68b30684dfff02a60' }, config);
-    //         setFields(data)
-    //       } catch (error) {
-    //         alert(error.message)
-    //       }
-    //     }
+        async function fetchCrops() {
+          const config = {
+            header: {
+              "Content-Type": "application/json",
+            },
+          };
 
-    //     fetchCrops();
+          const url = FarmerService + '/api/consultant/crops/mycrops'
+          console.log(url)
+
+          try {
+            const { data } = await axios.post(url, { consultantid: '63e539ebce9f46c959482e85' }, config);
+            setFarms(data)
+            console.log(data)
+          } catch (error) {
+            alert(error.message)
+          }
+        }
+
+        async function fetchWorkflows() {
+            const config = {
+              header: {
+                "Content-Type": "application/json",
+              },
+            };
+            const url = FarmerService + '/api/consultant/workflow/getworkflows'
+            try {
+              const { data } = await axios.post(url, { consultantid: '63e539ebce9f46c959482e85' }, config);
+              var w = []
+              var i = []
+              data.map((d, index) => {
+                console.log(d.workflowname)
+                w = [ ...w , d.workflowname]
+                i = [ ...i , d._id]
+              })
+              setWorkflows(w)
+              setWorkflowsIds(i)
+
+              console.log(data)
+            } catch (error) {
+              alert(error.message)
+            }
+          }
+
+        fetchCrops();
+
+        fetchWorkflows();
 
 
-    //   }, [])
+      }, [])
 
     return (
         <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
             {
                 farms.map((field) =>
                     <>
-                        <RenderCrop field={field} workflows={workflows} />
+                        <RenderCrop field={field} workflows={workflows} workflowIds={workflowIds} />
                     </>)
             }
         </Box>
