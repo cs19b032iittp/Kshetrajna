@@ -13,6 +13,9 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { Link as RouterLink, useLocation, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import Autocomplete from '@mui/material/Autocomplete';
+import { APIService } from "config";
+
 
 let easing = [0.6, -0.05, 0.01, 0.99];
 const fadeInUp = {
@@ -41,6 +44,7 @@ const animate = {
     },
 };
 
+const roles = ["Farmer", "Consultant", "Data Provider", "Model Builder", "Mill Owner"]
 const Register = () => {
     const navigate = useNavigate();
     const location = useLocation();
@@ -67,6 +71,8 @@ const Register = () => {
             .email("Email must be a valid email address")
             .required("Email is required"),
         password: Yup.string().required("Password is required"),
+        role: Yup.string().required("Role is required"),
+
     });
 
     const formik = useFormik({
@@ -75,6 +81,7 @@ const Register = () => {
             lastName: "",
             email: "",
             password: "",
+            role: "",
         },
         validationSchema: SignupSchema,
         onSubmit: async (values, props) => {
@@ -88,7 +95,12 @@ const Register = () => {
             };
 
             try {
-                const { data } = await axios.post("/api/auth/register", values, config);
+                console.log(values);
+
+                const url = APIService + '/api/auth/register'
+        
+
+                const { data } = await axios.post(url, values, config);
 
                 localStorage.setItem("authToken", data.token);
 
@@ -109,7 +121,7 @@ const Register = () => {
         },
     });
 
-    const { errors, touched, getFieldProps } = formik;
+    const { errors, touched, getFieldProps, setFieldValue } = formik;
 
     return (
         <Box>
@@ -207,6 +219,19 @@ const Register = () => {
                                 }}
                                 error={Boolean(touched.password && errors.password)}
                                 helperText={touched.password && errors.password}
+                            />
+
+                            <Autocomplete
+                                fullWidth
+                                disablePortal
+                                id="combo-box-demo"
+                                options={roles}
+                                {...getFieldProps("role")}
+                                onChange={(e, value) => {
+                                    setFieldValue("role", value)
+                                }}
+                                renderInput={(params) => <TextField {...params} label="Role" error={Boolean(touched.role && errors.role)}
+                                    helperText={touched.role && errors.role} />}
                             />
                         </Stack>
 

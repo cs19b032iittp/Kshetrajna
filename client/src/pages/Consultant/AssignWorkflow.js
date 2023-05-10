@@ -5,7 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-import { FarmerService } from "config";
+import { APIService } from "config";
 import axios from "axios";
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -31,7 +31,7 @@ const RenderCrop = ({ field, workflows, workflowIds }) => {
             },
           };
 
-          const url = FarmerService + '/api/consultant/workflow/assignworkflow'
+          const url = APIService + '/api/consultant/workflow/assignworkflow'
           console.log(url)
 
           try {
@@ -117,11 +117,11 @@ const AssignWorkflow = () => {
             },
           };
 
-          const url = FarmerService + '/api/consultant/crops/mycrops'
+          const url = APIService + '/api/consultant/crops/mycrops'
           console.log(url)
 
           try {
-            const { data } = await axios.post(url, { consultantid: '63e539ebce9f46c959482e85' }, config);
+            const { data } = await axios.post(url, { consultantid: localStorage.getItem('id') }, config);
             setFarms(data)
             console.log(data)
           } catch (error) {
@@ -135,7 +135,7 @@ const AssignWorkflow = () => {
                 "Content-Type": "application/json",
               },
             };
-            const url = FarmerService + '/api/consultant/workflow/getworkflows'
+            const url = APIService + '/api/consultant/workflow/getworkflows'
             try {
               const { data } = await axios.post(url, { consultantid: '63e539ebce9f46c959482e85' }, config);
               var w = []

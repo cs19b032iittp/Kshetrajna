@@ -1,7 +1,7 @@
 import { Box, Card, CardMedia, Divider, Grid, LinearProgress, Typography } from '@mui/material';
 import axios from "axios";
 import ErrorPage from 'components/Error';
-import { FarmerService } from "config";
+import { APIService } from "config";
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import FarmWorkflow from './FarmWorkflow';
@@ -98,6 +98,7 @@ const MyField = (props) => {
 
 
   const [workflowInstance, setWorkflowInstance] = useState({});
+  const [image, setImg] = useState('');
 
   useEffect(() => {
     async function getWorkflow() {
@@ -110,12 +111,14 @@ const MyField = (props) => {
           "Content-Type": "application/json",
         },
       };
-      const url = FarmerService + '/api/farmer/workflow/getmyworkflow'
+      const url = APIService + '/api/farmer/workflow/getmyworkflow'
       console.log({ url })
 
       try {
         const { data } = await axios.post(url, { cropid: cropid }, config);
         setWorkflowInstance(data.workflowInstance)
+        setImg(data.img)
+        console.log(data)
       } catch (error) {
         setError(true)
         setMessage(error.message)
@@ -142,7 +145,7 @@ const MyField = (props) => {
               <CardMedia
                 component="img"
                 height="250"
-                image='https://cdn.britannica.com/89/140889-050-EC3F00BF/Ripening-heads-rice-Oryza-sativa.jpg'
+                image={image}
                 alt='Paddy'
               />
             </Card>

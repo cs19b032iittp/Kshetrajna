@@ -5,7 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-import { FarmerService } from "config";
+import { APIService } from "config";
 import axios from "axios";
 import FetchingItems from 'components/FetchingItems';
 import ErrorPage from 'components/Error';
@@ -34,10 +34,10 @@ const Farms = () => {
           "Content-Type": "application/json",
         },
       };
-      const url = FarmerService + '/api/consultant/crops/myassignedcrops'
+      const url = APIService + '/api/consultant/crops/myassignedcrops'
       console.log(url)
       try {
-        const { data } = await axios.post(url, { consultantid : '63e539ebce9f46c959482e85' }, config);
+        const { data } = await axios.post(url, { consultantid : localStorage.getItem('id') }, config);
         
         setFields(data)
         console.log(data)

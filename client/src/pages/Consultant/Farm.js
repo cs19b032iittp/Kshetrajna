@@ -1,7 +1,7 @@
 import { LinearProgress } from '@mui/material'
 import axios from 'axios'
 import ErrorPage from 'components/Error'
-import { FarmerService } from 'config'
+import { APIService } from 'config'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import FarmWorkflow from './FarmWorkflow'
@@ -27,7 +27,7 @@ const Farm = () => {
           "Content-Type": "application/json",
         },
       };
-      const url = FarmerService + '/api/farmer/workflow/getmyworkflow'
+      const url = APIService + '/api/farmer/workflow/getmyworkflow'
       console.log({ url })
 
       try {

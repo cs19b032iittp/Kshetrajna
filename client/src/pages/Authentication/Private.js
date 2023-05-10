@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, Link as RouterLink, Outlet } from "react-router-dom";
 import axios from "axios";
 import { Link } from "@mui/material";
+import { APIService } from "config";
 
 const Private = () => {
     const [authorised, setAuthorised] = useState(true);
@@ -24,7 +25,8 @@ const Private = () => {
                 },
             };
             try {
-                const { data } = await axios.get("/api/private", config);
+                const url = APIService + "/api/private"
+                const { data } = await axios.get(url, config);
                 console.log("data: ", data.success)
                 setAuthorised(data.success);
 

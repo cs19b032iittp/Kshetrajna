@@ -3,7 +3,7 @@ import { Box, Button, Divider, Stack, TextField, Typography } from '@mui/materia
 import { grey, lightBlue, purple } from '@mui/material/colors';
 import { borderRadius } from '@mui/system';
 import axios from "axios";
-import { FarmerService } from "config";
+import { APIService } from "config";
 import { useEffect, useRef, useState } from 'react';
 import { GenerateImage } from 'utils/ExportAsImage';
 import CreateStage from './CreateStage';
@@ -58,7 +58,7 @@ const CreateWorkflow = () => {
         },
       };
 
-      const url = FarmerService + '/api/consultant/workflow/addworkflowtemplate'
+      const url = APIService + '/api/consultant/workflow/addworkflowtemplate'
 
       try {
         const response = await axios.put(url, { stages: stageFields, workflowname: name }, config);

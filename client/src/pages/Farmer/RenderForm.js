@@ -9,7 +9,7 @@ import FormLabel from '@mui/material/FormLabel';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import FormGroup from '@mui/material/FormGroup';
-import { FarmerService } from 'config';
+import { APIService } from 'config';
 import axios from "axios";
 import { useParams } from 'react-router-dom';
 
@@ -122,7 +122,7 @@ const handleSubmit = async (event) => {
         },
     };
 
-    const url = FarmerService + `/api/farmer/workflow/submitresponses`
+    const url = APIService + `/api/farmer/workflow/submitresponses`
 
     try {
         const { data } = await axios.put(url, { cropid: cropid, responses: formResponse }, config);

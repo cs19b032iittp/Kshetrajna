@@ -16,9 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
-
 import { styled } from '@mui/material/styles';
-import Hero from './Hero';
 
 //-----------------------------------------------------------------------------
 
@@ -27,13 +25,12 @@ import Hero from './Hero';
 const Title = styled(Typography)({
   fontSize: 30,
   fontWeight: 2500,
-  background: "#fff",
-  // background: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,212,255,1) 0%, rgba(162,222,131,1) 70%)",
+  background: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,212,255,1) 0%, rgba(162,222,131,1) 70%)",
   WebkitBackgroundClip: "text",
   WebkitTextFillColor: "transparent"
 });
 
-export default function Landing() {
+export default function Navbar() {
   // Drawer
   const isMobile = useMediaQuery(useTheme().breakpoints.down("sm"))
   const [state, setState] = useState(false); // state of drawer
@@ -51,7 +48,6 @@ export default function Landing() {
       <Toolbar sx={{ toolbar: (theme) => theme.mixins.toolbar }} />
 
       <List>
-
         <ListItemButton component={Link} href="/login" >
           <ListItemText primary={
             <Typography color="primary">
@@ -76,21 +72,20 @@ export default function Landing() {
     </div>
 
   )
-
+  
   return (
     <React.Fragment>
 
       <Box sx={{ flexGrow: 1 }}>
 
-        <AppBar elevation={0} color="inherit" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, background: 'transparent', boxShadow: 'none' }}>
+        <AppBar elevation={0} color="inherit" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
           <Toolbar >
-
             <Box sx={{ flexGrow: 1 }}>
               <Title as={Link} underline="none" href="/" variant="h5" >
                 Kshetrajna
+
               </Title>
             </Box>
-
 
             {isMobile ? (<></>
             ) : (
@@ -103,11 +98,11 @@ export default function Landing() {
                   edge: 'right'
                 }}
               >
-                <Button color="success"  variant="outlined" component={Link} href="/login">
+                <Button color="primary" component={Link} href="/login">
                   Login
                 </Button>
 
-                <Button color="primary" variant="contained" component={Link} href="/signup" >Signup</Button>
+                <Button color="primary" variant="outlined" component={Link} href="/register" >Signup</Button>
 
               </Box>
 
@@ -139,8 +134,6 @@ export default function Landing() {
         </AppBar>
 
       </Box>
-      <Hero />
-
     </React.Fragment>
   );
 

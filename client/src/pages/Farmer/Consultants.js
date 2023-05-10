@@ -3,38 +3,13 @@ import { green } from '@mui/material/colors';
 import axios from 'axios';
 import React, { useRef } from 'react';
 import Consultant from './Consultant';
+import { APIService } from 'config';
 
 const ConnectConsultants = () => {
 
-  const [consultants, setConsultants] = React.useState([
-    {
-      name: "Vivek Mani Charan",
-      state: "Andhra Pradesh",
-      rating: 5
-    },
-    {
-      name: "Aditya Naga Sai",
-      state: "Andhra Pradesh",
-      rating: 4
-    },
-    {
-      name: "Yashwanth",
-      state: "TN",
-      rating: 3.5
-    },
-    {
-      name: "Guna Sri Nitesh",
-      state: "Andhra Pradesh",
-      rating: 5
-    },
-    {
-      name: "Yethin Chandra Sai",
-      state: "Andhra Pradesh",
-      rating: 4
-    },
-  ]);
+  const [consultants, setConsultants] = React.useState([]);
 
-  const [selected, setSelected] = React.useState(1);
+  const [selected, setSelected] = React.useState(-1);
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -46,8 +21,10 @@ const ConnectConsultants = () => {
   };
 
   React.useEffect(() => {
-    axios.post("/api/farmer/connections").then((response) => {
-      console.log(response.data)
+    const url = APIService + "/api/farmer/connections/"
+    axios.post(url).then((response) => {
+      console.log("resp")
+      console.log(response.data.consultants)
       setConsultants(response.data.consultants)
     }).catch(function (error) {
       console.log(error);
@@ -76,24 +53,25 @@ const ConnectConsultants = () => {
                     <CardHeader
                       avatar={
                         <Avatar sx={{ bgcolor: green[500] }} aria-label="recipe">
-                          {consultant.name[0]}
+                          {consultant.firstName[0]}
                         </Avatar>
                       }
-                      title={consultant.name}
-                      subheader={consultant.state}
+                      title={consultant.firstName}
+                      subheader={"Andhra Pradesh"}
                     />
                     <CardContent sx={{ mt: -2 }}>
                       <Stack>
                         <Typography gutterBottom variant="body2" component="div">
                           Rating
                         </Typography>
-                        <Rating name="read-only" value={consultant.rating} readOnly />
+                        <Rating name="read-only" value={consultant.rating? consultant.rating : 0 } readOnly />
                       </Stack>
                     </CardContent>
                   </CardActionArea>
                 </ Card >
               ))}
-              <Consultant open={open && selected !== -1} setOpen={setOpen} handleClickOpen={handleClickOpen} handleClose={handleClose} consultant={consultants[selected]}/>
+              { selected === -1 ? <></>  : <Consultant open={open} consultant={consultants[selected]} setOpen={setOpen} handleClickOpen={handleClickOpen} handleClose={handleClose}/>
+               }
             </Box> 
       </Box>
   )

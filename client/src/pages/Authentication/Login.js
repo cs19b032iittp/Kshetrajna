@@ -7,6 +7,7 @@ import {
     TextField, Typography
 } from "@mui/material";
 import axios from "axios";
+import { APIService } from 'config';
 import { Form, FormikProvider, useFormik } from "formik";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
@@ -84,14 +85,17 @@ const Login = () => {
             const password = values.password;
 
             try {
+                const url = APIService + "/api/auth/login"
+
                 const { data } = await axios.post(
-                    "/api/auth/login",
+                    url,
                     {
                         email,
                         password
                     },
                     config
                 );
+
 
                 localStorage.setItem("authToken", data.token);
 
@@ -103,7 +107,7 @@ const Login = () => {
                 setAuthenticating(false);
                 setError(error.response.data.error);
                 setOpen(true);
-                console.log("data")
+               
                 console.log(error.response.data);
 
                 setTimeout(() => { setOpen(false) }, 5000);

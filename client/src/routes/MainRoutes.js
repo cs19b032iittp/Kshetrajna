@@ -7,6 +7,8 @@ import ModelBuilderNavigation from "pages/ModelBuilder/Navigation";
 import { lazy } from "react";
 import { Outlet } from "react-router-dom";
 import Private from "./PrivateRoute";
+import Products from "pages/MillOwner/Products";
+import MillOwnerNavigation from "pages/MillOwner/Navigation";
 
 const MainLayout = Loadable(lazy(() => import('layout/MainLayout')));
 
@@ -128,6 +130,16 @@ const MainRoutes = {
               element: <CreateWorkflow />
             },
           ]
+        }
+      ]
+    },
+    {
+      path: "mill_owner",
+      element: <MainLayout navigation={MillOwnerNavigation} />,
+      children: [
+        {
+          path: "products",
+          element: <Products />,
         }
       ]
     },

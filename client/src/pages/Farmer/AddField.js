@@ -16,7 +16,8 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import Autocomplete from '@mui/material/Autocomplete';
 import axios from "axios";
-import { FarmerService } from "config";
+import { APIService } from "config";
+import { convertLength } from "@mui/material/styles/cssUtils";
 
 let easing = [0.6, -0.05, 0.01, 0.99];
 
@@ -36,16 +37,40 @@ const animate = {
 const AddField = () => {
 
   const [open, setOpen] = React.useState(false);
-  const [consultants, setConsultants] = React.useState(["Vivek", "Aditya", "Yashwanth"]);
+  const [consultants, setConsultants] = React.useState([]);
+  const [consultantids, setConsultantids] = React.useState([]);
   const [submitting, setSubmitting] = React.useState(false);
 
-  const [date, setDate] = React.useState('');
+  React.useEffect(() => {
 
-  const handleDateChange = (newValue) => {
-    setDate(newValue);
-  };
+    async function fetchConsultants() {
 
-  //TODO: pass date as date object
+      const config = {
+        header: {
+          "Content-Type": "application/json",
+        },
+      };
+      const url = APIService + '/api/farmer/connections/getconsultant'
+      console.log(url)
+      try {
+        const { data } = await axios.post(url, { farmerid: localStorage.getItem('id') }, config);
+
+        console.log(data)
+        
+        setConsultants(data.names)
+        setConsultantids(data.ids)
+
+      } catch (error) {
+        alert(error.message)
+      }
+
+    }
+
+    fetchConsultants();
+
+
+  }, [])
+
   const AddFieldSchema = Yup.object().shape({
     farm: Yup.string()
       .required("farm type is required"),
@@ -85,13 +110,14 @@ const AddField = () => {
           img = 'https://cdn.britannica.com/05/75905-050-C7AE0733/Mangoes-tree.jpg'
           break;
         default:
+          img = 'https://t3.ftcdn.net/jpg/00/32/01/92/240_F_32019272_YwxbWYfgf6wsi7HKyZj78KlmbxfKI6dh.jpg'
           break
       }
 
       values = {
         ...values,
-        farmerId: "63e537d68b30684dfff02a60",
-        consultantId: "63e539ebce9f46c959482e85",
+        farmerId: localStorage.getItem("id"),
+        consultantId: consultantids[consultants.indexOf(values.consultant)],
         img: img
       }
       console.log(values);
@@ -102,7 +128,7 @@ const AddField = () => {
         },
       };
 
-      const url = FarmerService + '/api/farmer/crops/addcrop'
+      const url = APIService + '/api/farmer/crops/addcrop'
       console.log(url)
 
       try {
@@ -116,19 +142,9 @@ const AddField = () => {
           setOpen(false);
         }, 2000);
 
-        // localStorage.setItem("authToken", data.token);
-
-        // console.log("Login sucessful");
-        // setAuthenticating(false)
-        // navigate(from, { replace: true });
-
       } catch (error) {
-
         setSubmitting(false);
-
         alert(error.message)
-
-
       }
 
     },

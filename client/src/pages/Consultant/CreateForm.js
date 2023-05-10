@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import axios from "axios";
-import { FarmerService } from "config";
+import { APIService } from "config";
 import { Stack } from '@mui/system';
 import Delete from '@mui/icons-material/Delete';
 
@@ -76,7 +76,7 @@ const CreateForm = (props) => {
             },
         };
 
-        const url = FarmerService + '/api/consultant/workflow/addform'
+        const url = APIService + '/api/consultant/workflow/addform'
         console.log(url)
 
         try {

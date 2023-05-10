@@ -8,7 +8,7 @@ import Button from '@mui/material/Button';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import RenderForm from './RenderForm';
-import { FarmerService } from "config";
+import { APIService } from "config";
 import axios from "axios";
 
 

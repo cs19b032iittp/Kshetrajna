@@ -6,11 +6,40 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import axios from 'axios';
+import { APIService } from 'config';
 
-export default function Consultant({open , setOpen, handleClickOpen, handleClose, consultant}) {
+export default function Consultant({ open, setOpen, handleClickOpen, handleClose, consultant }) {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  console.log(consultant)
+  console.log(consultant.firstName)
 
+  const Connect = async () => {
+    const config = {
+      header: {
+        "Content-Type": "application/json",
+      },
+    };
+
+    const url = APIService + '/api/farmer/connections/connect'
+    console.log(url)
+
+    try {
+      const { data } = await axios.post(url, {
+        sender: localStorage.getItem('id'),
+        receiver: consultant._id
+      }, config);
+
+      setOpen(false);
+      alert("Request Sent")
+
+    } catch (error) {
+
+      setOpen(false);
+      alert(error.message)
+    }
+  }
 
   return (
     <div>
@@ -19,20 +48,16 @@ export default function Consultant({open , setOpen, handleClickOpen, handleClose
         open={open}
         onClose={handleClose}
         aria-labelledby="responsive-dialog-title"
+
       >
         <DialogTitle id="responsive-dialog-title">
-          {consultant.name}
+          Connect with {consultant.firstName}
         </DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            {"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."}
-          </DialogContentText>
-        </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} variant="outlined" color="success" >
-            Back
+          <Button onClick={handleClose} variant="outlined" color="error" >
+            Cancel
           </Button>
-          <Button onClick={handleClose} autoFocus variant="contained" color="success">
+          <Button onClick={Connect} autoFocus variant="contained" color="success">
             Connect
           </Button>
         </DialogActions>

@@ -173,7 +173,7 @@ export default function MainLayout(props) {
           <MenuItem key={1} onClick={(() => { navigate("/profile") })}>
             <Typography textAlign="center">Profile</Typography>
           </MenuItem>
-          <MenuItem key={2} onClick={(() => { localStorage.removeItem("authToken"); navigate("/login") })}>
+          <MenuItem key={2} onClick={(() => { localStorage.removeItem("authToken"); localStorage.removeItem("id"); navigate("/login") })}>
             <Typography textAlign="center">Logout</Typography>
           </MenuItem>
         </Menu>
