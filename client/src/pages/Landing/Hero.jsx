@@ -94,7 +94,7 @@ export default function Hero() {
 
                             <ThemeProvider theme={captionTheme}>
                                 <Typography variant="body1" align="center" color="inherit" paragraph>
-                                    An inovative step to help Senior Citizens
+                                    An innovative step to help Farmers
                                 </Typography>
                             </ThemeProvider>
 

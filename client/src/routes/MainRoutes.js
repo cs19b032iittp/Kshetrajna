@@ -9,6 +9,7 @@ import { Outlet } from "react-router-dom";
 import Private from "./PrivateRoute";
 import Products from "pages/MillOwner/Products";
 import MillOwnerNavigation from "pages/MillOwner/Navigation";
+import Tracking from "./Tracking";
 
 const MainLayout = Loadable(lazy(() => import('layout/MainLayout')));
 

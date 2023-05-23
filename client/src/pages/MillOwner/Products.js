@@ -27,6 +27,7 @@ const Product = ({ open, setOpen, handleClickOpen, handleClose, product }) => {
 
             setOpen(false);
             alert("Done")
+            window.location.reload()
 
         } catch (error) {
 

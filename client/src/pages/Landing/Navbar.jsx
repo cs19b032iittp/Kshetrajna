@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import React, { useState } from 'react';
 
-import { Link, useMediaQuery, useTheme } from '@mui/material';
+import { Divider, Link, useMediaQuery, useTheme } from '@mui/material';
 import Button from '@mui/material/Button';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
@@ -17,6 +17,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 
 import { styled } from '@mui/material/styles';
+import { APIService } from 'config';
 
 //-----------------------------------------------------------------------------
 
@@ -98,6 +99,10 @@ export default function Navbar() {
                   edge: 'right'
                 }}
               >
+                <Button color="primary" component={Link} href={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=http://10.21.112.1:3000/tracking/1543`}>
+                  Generate QR
+                </Button>
+                <Divider orientation='vertical'/>
                 <Button color="primary" component={Link} href="/login">
                   Login
                 </Button>

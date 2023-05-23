@@ -52,19 +52,6 @@ export default function MainLayout(props) {
           <Logo />
 
           <Box>
-            <Tooltip title="Switch Dashboard">
-              <IconButton
-                onClick={handleSwitchDashboardClick}
-                size="small"
-                sx={{ ml: 2 }}
-                aria-controls={Boolean(anchorElDashboardMenu) ? 'account-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={Boolean(anchorElDashboardMenu) ? 'true' : undefined}
-              >
-                <DashboardIcon />
-              </IconButton>
-            </Tooltip>
-
             <Chip
               sx={{
                 height: '48px',
@@ -109,50 +96,6 @@ export default function MainLayout(props) {
 
 
         </Toolbar>
-        <Menu
-          anchorEl={anchorElDashboardMenu}
-          id="account-menu"
-          open={Boolean(anchorElDashboardMenu)}
-          onClose={handleSwitchDashboardClose}
-          PaperProps={{
-            elevation: 0,
-            sx: {
-              overflow: 'visible',
-              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-              mt: 1.5,
-              '& .MuiAvatar-root': {
-                width: 32,
-                height: 32,
-                ml: -0.5,
-                mr: 1,
-              },
-              '&:before': {
-                content: '""',
-                display: 'block',
-                position: 'absolute',
-                top: 0,
-                right: 14,
-                width: 10,
-                height: 10,
-                bgcolor: 'background.paper',
-                transform: 'translateY(-50%) rotate(45deg)',
-                zIndex: 0,
-              },
-            },
-          }}
-          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-        >
-          <MenuItem onClick={(() => navigate("/farmer/farm/my-fields"))}>
-            <AgricultureIcon sx={{ mr: 1.5 }} /> Farmer
-          </MenuItem>
-          <MenuItem onClick={(() => navigate("/consultant/requests/farmer"))}>
-            <EmojiPeopleIcon sx={{ mr: 1.5 }} /> Consutlant
-          </MenuItem>
-          <MenuItem onClick={(() => navigate("/model-builder/model/upload"))}>
-            <CodeIcon sx={{ mr: 1.5 }} /> Model Builder
-          </MenuItem>
-        </Menu>
 
         <Menu
           sx={{ mt: '52px' }}
